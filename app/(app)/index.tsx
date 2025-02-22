@@ -1209,7 +1209,7 @@ export default function Dashboard() {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Sales Overview</Text>
+          <Text style={styles.cardTitle}>Sales</Text>
           <View style={styles.statsRow}>
             <View style={styles.stat}>
               <Text style={styles.statLabel}>Total Bills</Text>
@@ -1249,6 +1249,38 @@ export default function Dashboard() {
             />
           </View>
         </View>
+
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Purchases</Text>
+          <View style={styles.statsRow}>
+            <View style={styles.stat}>
+              <Text style={styles.statLabel}>Total Bills</Text>
+              <Text style={styles.statValue}>0</Text>
+            </View>
+          </View>
+          <View style={styles.statsRow}>
+            <View style={styles.stat}>
+              <Text style={styles.statLabel}>Total Sales</Text>
+              <Text style={styles.statValue}>₹0.00</Text>
+            </View>
+          </View>
+        </View>
+
+
+        <View style={styles.card}>
+          <Text style={styles.cardTitle}>Total Purchases</Text>
+          <View style={styles.chartWrapper}>
+            <LineChart
+              data={data}
+              width={screenWidth - 64}
+              height={220}
+              chartConfig={chartConfig}
+              bezier
+              style={styles.chart}
+            />
+          </View>
+        </View>
+
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Reminders</Text>
