@@ -1122,16 +1122,299 @@
 
 
 
+// "use client"
+
+// import { useState, useEffect } from "react"
+// import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions } from "react-native"
+// import { Ionicons } from "@expo/vector-icons"
+// import { LineChart } from "react-native-chart-kit"
+// import Sidebar from "../../components/Sidebar"
+// import { useAuth } from "../../context/auth"
+// import MyCarousel from "@/components/MyCarousel"
+
+// const screenWidth = Dimensions.get("window").width
+
+// const chartConfig = {
+//   backgroundGradientFrom: "#ffffff",
+//   backgroundGradientTo: "#ffffff",
+//   color: (opacity = 1) => `rgba(74, 222, 128, ${opacity})`,
+//   strokeWidth: 2,
+//   barPercentage: 0.5,
+//   useShadowColorFromDataset: false,
+//   propsForDots: {
+//     r: "6",
+//     strokeWidth: "2",
+//     stroke: "#4ade80",
+//   },
+//   propsForBackgroundLines: {
+//     strokeWidth: 1,
+//     stroke: "#e5e7eb",
+//   },
+//   propsForLabels: {
+//     fontSize: 12,
+//     fill: "#6b7280",
+//   },
+//   withDots: false,
+//   withInnerLines: true,
+//   withOuterLines: true,
+//   withVerticalLabels: true,
+//   withHorizontalLabels: true,
+//   withShadow: false,
+// }
+
+// const data = {
+//   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+//   datasets: [
+//     {
+//       data: [20, 45, 28, 80, 99, 43],
+//       color: (opacity = 1) => `rgba(74, 222, 128, ${opacity})`,
+//       strokeWidth: 2,
+//     },
+//   ],
+// }
+
+// const invoices = [
+//   {
+//     id: "23",
+//     name: "ANNAPOORNA",
+//     amount: 19200.0,
+//     quantity: 1,
+//     date: "7/12/2024",
+//   },
+//   {
+//     id: "153",
+//     name: "John Doe",
+//     amount: 25000.0,
+//     quantity: 2,
+//     date: "7/12/2024",
+//   },
+// ]
+
+// export default function Dashboard() {
+//   const { logout } = useAuth()
+//   const [sidebarVisible, setSidebarVisible] = useState(false)
+//   const [totalBills, setTotalBills] = useState(0)
+//   const [totalSales, setTotalSales] = useState(null)
+//   const [totalCash, setTotalCash] = useState(null)
+
+//   useEffect(() => {
+//     const fetchData = async () => {
+//       try {
+//         const today = new Date()
+//         const month = today.getMonth() + 1
+//         const date = today.getDate()
+//         const year = today.getFullYear()
+//         const formattedDate = `${month}%2F${date}%2F${year}`
+
+//         // Fetch total bills
+//         const billsResponse = await fetch(
+//           `http://www.textileerp.timeserasoftware.in/api/ERP/GetTotalBills?billDate=${formattedDate}`,
+//           {
+//             headers: {
+//               'accept': '*/*',
+//               'tenantName': 'Hq975eIDSVP1hfE9exLODw=='
+//             }
+//           }
+//         )
+//         const billsData = await billsResponse.json()
+//         if (Array.isArray(billsData) && billsData.length > 0 && billsData[0].hasOwnProperty('Expr1')) {
+//           setTotalBills(billsData[0].Expr1)
+//         }
+
+//         // Fetch total sales
+//         const salesResponse = await fetch(
+//           `http://www.textileerp.timeserasoftware.in/api/ERP/GetTotalSaleValue?billDate=${formattedDate}`,
+//           {
+//             headers: {
+//               'accept': '*/*',
+//               'tenantName': 'Hq975eIDSVP1hfE9exLODw=='
+//             }
+//           }
+//         )
+//         const salesData = await salesResponse.json()
+//         if (Array.isArray(salesData) && salesData.length > 0 && salesData[0].hasOwnProperty('AMT')) {
+//           setTotalSales(salesData[0].AMT)
+//         }
+
+//         // Fetch total cash sales
+//         const cashResponse = await fetch(
+//           `http://www.textileerp.timeserasoftware.in/api/ERP/GetTotalCashSale?billDate=${formattedDate}`,
+//           {
+//             headers: {
+//               'accept': '*/*',
+//               'tenantName': 'Hq975eIDSVP1hfE9exLODw=='
+//             }
+//           }
+//         )
+//         const cashData = await cashResponse.json()
+//         if (Array.isArray(cashData) && cashData.length > 0 && cashData[0].hasOwnProperty('CASH')) {
+//           setTotalCash(cashData[0].CASH)
+//         }
+//       } catch (error) {
+//         console.error('Error fetching data:', error)
+//       }
+//     }
+
+//     fetchData()
+//   }, [])
+
+//   return (
+//     <View style={styles.container}>
+//       <ScrollView 
+//         contentContainerStyle={styles.scrollContent}
+//         bounces={false}
+//       >
+//         <View style={styles.carouselContainer}>
+//           <MyCarousel />
+//         </View>
+
+//         <View style={styles.card}>
+//           <Text style={styles.cardTitle}>Sales</Text>
+//           <View style={styles.statsRow}>
+//             <View style={styles.stat}>
+//               <Text style={styles.statLabel}>Total Bills</Text>
+//               <Text style={styles.statValue}>{totalBills ? totalBills : 0}</Text>
+//             </View>
+//           </View>
+//           <View style={styles.statsRow}>
+//             <View style={styles.stat}>
+//               <Text style={styles.statLabel}>Total Sales</Text>
+//               <Text style={styles.statValue}>{totalSales ? `₹${totalSales.toFixed(2)}` : "₹0.00"}</Text>
+//             </View>
+//           </View>
+//         </View>
+
+//         <View style={styles.card}>
+//           <Text style={styles.cardTitle}>Collections</Text>
+//           <View style={styles.collectionsGrid}>
+//             {["Cash", "Card", "Online", "UPI", "Cheque", "Balance"].map((title) => (
+//               <View key={title} style={styles.collectionCircle}>
+//                 <Text style={styles.collectionTitle}>{title}</Text>
+//                 <Text style={styles.collectionAmount}>
+//                   {title === "Cash" && totalCash ? `₹${totalCash.toFixed(2)}` : "₹0.00"}
+//                 </Text>
+//               </View>
+//             ))}
+//           </View>
+//         </View>
+
+//         <View style={styles.card}>
+//           <Text style={styles.cardTitle}>Total Sales</Text>
+//           <View style={styles.chartWrapper}>
+//             <LineChart
+//               data={data}
+//               width={screenWidth - 64}
+//               height={220}
+//               chartConfig={chartConfig}
+//               bezier
+//               style={styles.chart}
+//             />
+//           </View>
+//         </View>
+
+//         <View style={styles.card}>
+//           <Text style={styles.cardTitle}>Purchases</Text>
+//           <View style={styles.statsRow}>
+//             <View style={styles.stat}>
+//               <Text style={styles.statLabel}>Total Bills</Text>
+//               <Text style={styles.statValue}>0</Text>
+//             </View>
+//           </View>
+//           <View style={styles.statsRow}>
+//             <View style={styles.stat}>
+//               <Text style={styles.statLabel}>Total Sales</Text>
+//               <Text style={styles.statValue}>₹0.00</Text>
+//             </View>
+//           </View>
+//         </View>
 
 
+//         <View style={styles.card}>
+//           <Text style={styles.cardTitle}>Total Purchases</Text>
+//           <View style={styles.chartWrapper}>
+//             <LineChart
+//               data={data}
+//               width={screenWidth - 64}
+//               height={220}
+//               chartConfig={chartConfig}
+//               bezier
+//               style={styles.chart}
+//             />
+//           </View>
+//         </View>
 
 
+//         <View style={styles.card}>
+//           <Text style={styles.cardTitle}>Reminders</Text>
+//           <View style={styles.reminderItem}>
+//             <Ionicons name="gift-outline" size={24} color="#4ade80" />
+//             <View style={styles.reminderContent}>
+//               <Text style={styles.reminderTitle}>Birthday</Text>
+//               <Text style={styles.reminderCount}>0</Text>
+//             </View>
+//             <Pressable style={styles.checkButton}>
+//               <Text style={styles.checkButtonText}>Check</Text>
+//             </Pressable>
+//           </View>
+//           <View style={[styles.reminderItem, styles.noBorder]}>
+//             <Ionicons name="heart-outline" size={24} color="#4ade80" />
+//             <View style={styles.reminderContent}>
+//               <Text style={styles.reminderTitle}>Anniversary</Text>
+//               <Text style={styles.reminderCount}>0</Text>
+//             </View>
+//             <Pressable style={styles.checkButton}>
+//               <Text style={styles.checkButtonText}>Check</Text>
+//             </Pressable>
+//           </View>
+//         </View>
+
+//         <View style={styles.card}>
+//           <Text style={styles.cardTitle}>Recent Invoices</Text>
+//           <ScrollView
+//             horizontal
+//             showsHorizontalScrollIndicator={false}
+//             pagingEnabled
+//             contentContainerStyle={styles.invoicesContainer}
+//           >
+//             {invoices.map((invoice) => (
+//               <View key={invoice.id} style={styles.invoiceCard}>
+//                 <View style={styles.invoiceHeader}>
+//                   <Text style={styles.invoiceHeaderText}>Invoice #{invoice.id}</Text>
+//                 </View>
+//                 <View style={styles.invoiceBody}>
+//                   <View style={styles.invoiceRow}>
+//                     <Text style={styles.invoiceLabel}>Name:</Text>
+//                     <Text style={styles.invoiceValue}>{invoice.name}</Text>
+//                   </View>
+//                   <View style={styles.invoiceRow}>
+//                     <Text style={styles.invoiceLabel}>Amount:</Text>
+//                     <Text style={styles.invoiceValue}>₹{invoice.amount.toFixed(2)}</Text>
+//                   </View>
+//                   <View style={styles.invoiceRow}>
+//                     <Text style={styles.invoiceLabel}>Quantity:</Text>
+//                     <Text style={styles.invoiceValue}>{invoice.quantity}</Text>
+//                   </View>
+//                   <View style={styles.invoiceRow}>
+//                     <Text style={styles.invoiceLabel}>Date:</Text>
+//                     <Text style={styles.invoiceValue}>{invoice.date}</Text>
+//                   </View>
+//                 </View>
+//               </View>
+//             ))}
+//           </ScrollView>
+//         </View>
+//       </ScrollView>
+
+//       <Sidebar visible={sidebarVisible} onClose={() => setSidebarVisible(false)} logout={logout} />
+//     </View>
+//   )
+// }
 
 
 
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { View, Text, StyleSheet, ScrollView, Pressable, Dimensions } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { LineChart } from "react-native-chart-kit"
@@ -1200,10 +1483,112 @@ const invoices = [
 export default function Dashboard() {
   const { logout } = useAuth()
   const [sidebarVisible, setSidebarVisible] = useState(false)
+  const [totalBills, setTotalBills] = useState(0)
+  const [totalSales, setTotalSales] = useState(null)
+  const [collections, setCollections] = useState({
+    Cash: 0,
+    Card: 0,
+    Online: 0,
+    UPI: 0,
+    Cheque: 0,
+    Balance: 0
+  })
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const today = new Date()
+        const month = today.getMonth() + 1
+        const date = today.getDate()
+        const year = today.getFullYear()
+        const formattedDate = `${month}%2F${date}%2F${year}`
+
+        // Fetch total bills
+        const billsResponse = await fetch(
+          `http://www.textileerp.timeserasoftware.in/api/ERP/GetTotalBills?billDate=${formattedDate}`,
+          {
+            headers: {
+              'accept': '*/*',
+              'tenantName': 'Hq975eIDSVP1hfE9exLODw=='
+            }
+          }
+        )
+        const billsData = await billsResponse.json()
+        if (Array.isArray(billsData) && billsData.length > 0 && billsData[0].hasOwnProperty('Expr1')) {
+          setTotalBills(billsData[0].Expr1)
+        }
+
+        // Fetch total sales
+        const salesResponse = await fetch(
+          `http://www.textileerp.timeserasoftware.in/api/ERP/GetTotalSaleValue?billDate=${formattedDate}`,
+          {
+            headers: {
+              'accept': '*/*',
+              'tenantName': 'Hq975eIDSVP1hfE9exLODw=='
+            }
+          }
+        )
+        const salesData = await salesResponse.json()
+        if (Array.isArray(salesData) && salesData.length > 0 && salesData[0].hasOwnProperty('AMT')) {
+          setTotalSales(salesData[0].AMT)
+        }
+
+        // Fetch Cash and Card data only
+        const newCollections = { ...collections }
+
+        // Fetch Cash data
+        try {
+          const cashResponse = await fetch(
+            `http://www.textileerp.timeserasoftware.in/api/ERP/GetTotalCashSale?billDate=${formattedDate}`,
+            {
+              headers: {
+                'accept': '*/*',
+                'tenantName': 'Hq975eIDSVP1hfE9exLODw=='
+              }
+            }
+          )
+          const cashData = await cashResponse.json()
+          if (Array.isArray(cashData) && cashData.length > 0) {
+            newCollections.Cash = cashData[0].CASH || 0
+          }
+        } catch (error) {
+          console.error('Error fetching cash data:', error)
+        }
+
+        // Fetch Card data
+        try {
+          const cardResponse = await fetch(
+            `http://www.textileerp.timeserasoftware.in/api/ERP/GetTotalCardSale?billDate=${formattedDate}`,
+            {
+              headers: {
+                'accept': '*/*',
+                'tenantName': 'Hq975eIDSVP1hfE9exLODw=='
+              }
+            }
+          )
+          const cardData = await cardResponse.json()
+          if (Array.isArray(cardData) && cardData.length > 0) {
+            newCollections.Card = cardData[0].Expr2 || 0
+          }
+        } catch (error) {
+          console.error('Error fetching card data:', error)
+        }
+
+        setCollections(newCollections)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        bounces={false}
+      >
         <View style={styles.carouselContainer}>
           <MyCarousel />
         </View>
@@ -1213,13 +1598,13 @@ export default function Dashboard() {
           <View style={styles.statsRow}>
             <View style={styles.stat}>
               <Text style={styles.statLabel}>Total Bills</Text>
-              <Text style={styles.statValue}>0</Text>
+              <Text style={styles.statValue}>{totalBills ? totalBills : 0}</Text>
             </View>
           </View>
           <View style={styles.statsRow}>
             <View style={styles.stat}>
               <Text style={styles.statLabel}>Total Sales</Text>
-              <Text style={styles.statValue}>₹0.00</Text>
+              <Text style={styles.statValue}>{totalSales ? `₹${totalSales.toFixed(2)}` : "₹0.00"}</Text>
             </View>
           </View>
         </View>
@@ -1227,10 +1612,12 @@ export default function Dashboard() {
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Collections</Text>
           <View style={styles.collectionsGrid}>
-            {["Cash", "Card", "Online", "UPI", "Cheque", "Balance"].map((title) => (
-              <View key={title} style={styles.collectionCircle}>
-                <Text style={styles.collectionTitle}>{title}</Text>
-                <Text style={styles.collectionAmount}>₹0.00</Text>
+            {Object.entries(collections).map(([method, amount]) => (
+              <View key={method} style={styles.collectionCircle}>
+                <Text style={styles.collectionTitle}>{method}</Text>
+                <Text style={styles.collectionAmount}>
+                  ₹{amount.toFixed(2)}
+                </Text>
               </View>
             ))}
           </View>
@@ -1266,7 +1653,6 @@ export default function Dashboard() {
           </View>
         </View>
 
-
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Total Purchases</Text>
           <View style={styles.chartWrapper}>
@@ -1280,7 +1666,6 @@ export default function Dashboard() {
             />
           </View>
         </View>
-
 
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Reminders</Text>
@@ -1348,6 +1733,13 @@ export default function Dashboard() {
   )
 }
 
+
+
+
+
+
+
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -1399,6 +1791,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-between",
+    gap: 12,
   },
   collectionCircle: {
     width: "30%",
@@ -1408,6 +1801,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 16,
+    borderWidth: 2,
+    borderColor: "#4ade80",
+    overflow: "hidden",
   },
   collectionTitle: {
     fontSize: 14,
@@ -1502,5 +1898,3 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 })
-
-
