@@ -110,9 +110,9 @@ const Carousel = () => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 0,
     position: 'relative',
     height: 250,
+    marginTop: -1, // Add negative margin to remove the gap
   },
   slide: {
     width: SCREEN_WIDTH,

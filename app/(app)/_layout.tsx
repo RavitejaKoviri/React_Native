@@ -25,7 +25,7 @@
 
 
 
-// app/(app)/_layout.tsx
+// app/(app)/_layout.tsx   
 import { Stack } from 'expo-router';
 import { useAuth } from '../../context/auth';
 import { View } from 'react-native';
