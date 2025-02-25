@@ -614,7 +614,8 @@ export default function Inventory() {
                 <Text style={styles.emptyText}>No inventory wise stock data</Text>
           )}
           
-          
+        {/* ajdsbgajbdsa */}
+
         </Accordion>
 
         <Accordion title="Bar Code" isOpen={accordionStates.barCode} onToggle={() => toggleAccordion('barCode')}>
