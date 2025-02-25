@@ -30,20 +30,52 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // const login = async (username: string, password: string) => {
+  //   try {
+  //     if (username === 'user' && password === '123') {
+  //       await AsyncStorage.setItem('userSession', 'true');
+  //       setIsLoggedIn(true);
+  //       router.replace('/(app)');
+  //       return true;
+  //     }
+  //     return false;
+  //   } catch (error) {
+  //     console.error('Error during login:', error);
+  //     return false;
+  //   }
+  // };
+
+
+
+
+
   const login = async (username: string, password: string) => {
     try {
-      if (username === 'user' && password === '123') {
+      const response = await fetch(
+        `http://www.textileerp.timeserasoftware.in/api/Tenant/CheckValidTenant?userName=${username}&password=${password}`,
+        {
+          method: 'GET',
+          headers: {
+            'accept': '*/*',
+            'tenantName': 'Hq975eIDSVP1hfE9exLODw==',
+          },
+        }
+      );
+  
+      if (response.status === 200) {
         await AsyncStorage.setItem('userSession', 'true');
         setIsLoggedIn(true);
         router.replace('/(app)');
         return true;
       }
+  
       return false;
     } catch (error) {
       console.error('Error during login:', error);
       return false;
     }
   };
+  
 
   const logout = async () => {
     try {

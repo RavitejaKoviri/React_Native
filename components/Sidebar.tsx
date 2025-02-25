@@ -186,10 +186,8 @@
 
 
 
-
-
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, Animated, Dimensions, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../context/auth';
 import { useRouter, usePathname } from 'expo-router';
@@ -247,7 +245,11 @@ export default function Sidebar({ visible, onClose }: SidebarProps) {
           
           <View style={styles.logoContainer}>
             <View style={styles.logo}>
-              <Text style={styles.logoText}>T</Text>
+              <Image 
+                source={require('../assets/images/TTTTT.png')}
+                style={styles.logoImage}
+                resizeMode="contain"
+              />
             </View>
           </View>
 
@@ -322,17 +324,14 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   logo: {
-    width: 70,
+    width: 150,
     height: 70,
-    backgroundColor: '#4CAF50',
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 999,
   },
-  logoText: {
-    fontSize: 32,
-    color: '#fff',
-    fontWeight: 'bold',
+  logoImage: {
+    width: '100%',
+    height: '100%',
   },
   menuItems: {
     marginTop: 0,
