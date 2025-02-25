@@ -84,16 +84,16 @@ const Carousel = () => {
               style={styles.image}
               resizeMode="cover"
             />
-            <View style={styles.content}>
+            {/* <View style={styles.content}>
               <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.description}>{item.description}</Text>
-            </View>
+            </View> */}
           </View>
         ))}
       </ScrollView>
 
       {/* Pagination Dots */}
-      <View style={styles.pagination}>
+      {/* <View style={styles.pagination}>
         {data.map((_, index) => (
           <View
             key={index}
@@ -103,16 +103,17 @@ const Carousel = () => {
             ]}
           />
         ))}
-      </View>
+      </View> */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 0,
     position: 'relative',
-    height: 250,
+    height: 200,
+    marginTop: -1, // Add negative margin to remove the gap
+    marginBottom: 16,
   },
   slide: {
     width: SCREEN_WIDTH,
