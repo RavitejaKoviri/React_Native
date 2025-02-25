@@ -613,8 +613,7 @@ export default function Inventory() {
           ) : (
                 <Text style={styles.emptyText}>No inventory wise stock data</Text>
           )}
-          
-        {/* ajdsbgajbdsa */}
+        
 
         </Accordion>
 
