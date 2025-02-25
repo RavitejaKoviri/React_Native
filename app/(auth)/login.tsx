@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, ImageBackground, Image} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '../../context/auth';
 
@@ -25,8 +25,8 @@ export default function LoginScreen() {
       >
         <View style={styles.overlay}>
           <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>T</Text>
-            <Text style={styles.appName}>Timesera ERP</Text>
+            <Image source={require("../../assets/images/TTTTT.png")}   style={{ width: 60, height: 60 }}  />
+            <Text style={styles.appName}><Text style={styles.title_t}>T</Text>IMES<Text style={styles.title_era}>ERA</Text> ERA</Text>
           </View>
 
           <Text style={styles.title}>Login to your account</Text>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 40,
+    marginBottom: 10,
   },
   logoText: {
     fontSize: 32,
@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     marginLeft: 10,
     fontWeight: '600',
+    marginBottom:8,
   },
   title: {
     fontSize: 24,
@@ -131,4 +132,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
   },
+  title_t:{
+    fontSize:50,
+  },
+  title_era:{
+    color: '#10b981',
+  }
 });
