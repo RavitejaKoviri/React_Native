@@ -248,7 +248,7 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -263,6 +263,15 @@ import { Picker } from '@react-native-picker/picker';
 import { Accordion } from '../../components/Accordion';
 import MyCarousel from '@/components/MyCarousel';
 
+interface StockItem {
+  PTYPE: string;
+  ProdName: string;
+  QTY: number;
+  AMOUNT: number;
+  SAMOUNT: number;
+}
+
+
 export default function Accounts() {
   const [accordionStates, setAccordionStates] = useState({
     outstandingCustomers: false,
@@ -274,12 +283,14 @@ export default function Accounts() {
     purchaseRegister: false,
     journalRegister: false,
   });
-
-  const [selectedBank, setSelectedBank] = useState('123');
+  const [loading, setLoading] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
+
+   
 
   const toggleAccordion = (key: keyof typeof accordionStates) => {
     setAccordionStates((prev) => ({
@@ -301,6 +312,171 @@ export default function Accounts() {
       return acc;
     }, {} as typeof accordionStates));
   };
+
+
+  const dateFormat = (date: Date): string => {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+
+
+    // Data states mapped to each accordion
+    const [commodityPurchaseData, setCommodityPurchaseData] = useState<StockItem[]>([]);
+  const [productPurchaseData, setProductPurchaseData] = useState<StockItem[]>([]);
+  const [dealerPurchaseData, setDealerPurchaseData] = useState<StockItem[]>([]);
+  const [hsnPurchaseData, setHSNPurchaseData] = useState<StockItem[]>([]);
+  const [brandPurchaseData, setBrandPurchaseData] = useState<StockItem[]>([]);
+  const [taxPurchaseData, setTaxPurchaseData] = useState<StockItem[]>([]);
+
+
+  const fetchCommodityPurchase = async (): Promise<void> => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetCommodityPurchase?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          tenantName: 'Hq975eIDSVP1hfE9exLODw=='
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data: StockItem[] = await response.json();
+      setCommodityPurchaseData(data);
+      console.log('Fetched commodity purchase data:', data);
+    } catch (error) {
+      console.error('Error fetching commodity purchase data:', error);
+    }
+  };
+
+  const fetchProductPurchase = async (): Promise<void> => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetProductWisePurchase?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          tenantName: 'Hq975eIDSVP1hfE9exLODw=='
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data: StockItem[] = await response.json();
+      setProductPurchaseData(data);
+      console.log('Fetched product purchase data:', data);
+    } catch (error) {
+      console.error('Error fetching product purchase data:', error);
+    }
+  };
+
+  const fetchDealerPurchase = async (): Promise<void> => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetDealerWisePurchase?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          tenantName: 'Hq975eIDSVP1hfE9exLODw=='
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data: StockItem[] = await response.json();
+      setDealerPurchaseData(data);
+      console.log('Fetched dealer purchase data:', data);
+    } catch (error) {
+      console.error('Error fetching dealer purchase data:', error);
+    }
+  };
+
+  const fetchHsnPurchase = async (): Promise<void> => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetHSNWisePurchase?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          tenantName: 'Hq975eIDSVP1hfE9exLODw=='
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data: StockItem[] = await response.json();
+      setHSNPurchaseData(data);
+      console.log('Fetched HSN purchase data:', data);
+    } catch (error) {
+      console.error('Error fetching HSN purchase data:', error);
+    }
+  };
+
+  const fetchBrandPurchase = async (): Promise<void> => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetBrandWisePurchase?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          tenantName: 'Hq975eIDSVP1hfE9exLODw=='
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data: StockItem[] = await response.json();
+      setBrandPurchaseData(data);
+      console.log('Fetched brand purchase data:', data);
+    } catch (error) {
+      console.error('Error fetching brand purchase data:', error);
+    }
+  };
+
+  const fetchTaxPurchase = async (): Promise<void> => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetTaxWisePurchase?startDate=${formattedStartDate}&endDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          accept: '*/*',
+          tenantName: 'Hq975eIDSVP1hfE9exLODw=='
+        }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+      const data: StockItem[] = await response.json();
+      setTaxPurchaseData(data);
+      console.log('Fetched tax purchase data:', data);
+    } catch (error) {
+      console.error('Error fetching tax purchase data:', error);
+    }
+  };
+
+
+
+  useEffect(()=>{
+    console.log("venkat")
+    console.log(dateFormat(startDate),"hloo")
+  },[startDate,endDate])
+
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -382,6 +558,7 @@ export default function Accounts() {
             )}
           </View>
         </View>
+
 
         {/* Accordions */}
         <Accordion title="Commodity Wise Purchase" isOpen={accordionStates.outstandingCustomers} onToggle={() => toggleAccordion('outstandingCustomers')}>
