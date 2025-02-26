@@ -591,8 +591,9 @@
 
 
 
-
 import React, { useState } from 'react';
+import { useAuth } from "../../context/auth"; // Import AuthContext
+
 import {
   View,
   Text,
@@ -606,6 +607,51 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Picker } from '@react-native-picker/picker';
 import { Accordion } from '../../components/Accordion';
 import MyCarousel from '@/components/MyCarousel';
+import { useQuery } from '@tanstack/react-query';
+
+const fetchCashOpening = async () => {
+  const today = new Date();
+  const month = today.getMonth() + 1;
+  const date = today.getDate();
+  const year = today.getFullYear();
+  const formattedDate = `${month}%2F${date}%2F${year}`;
+
+  const response = await fetch(
+    `http://www.textileerp.timeserasoftware.in/api/ERP/GetCashBookOpening?fromDate=${formattedDate}`,
+    {
+      headers: {
+        accept: "*/*",
+        tenantName: "Hq975eIDSVP1hfE9exLODw==",
+      },
+    }
+  );
+  const data = await response.json();
+  return data[0]?.JAMAAMOUNT - data[0]?.NAMAAMOUNT || 0;
+};
+
+
+
+
+
+const fetchBankOpening = async (ledgerName: string) => {
+  if (!ledgerName) return 0; // Ensure username exists before calling API
+
+  const today = new Date();
+  const formattedDate = `${today.getMonth() + 1}%2F${today.getDate()}%2F${today.getFullYear()}`;
+
+  const response = await fetch(
+    `http://www.textileerp.timeserasoftware.in/api/ERP/GetBankStatementOpening?fromDate=${formattedDate}&ledgerName=${ledgerName}`,
+    {
+      headers: {
+        accept: "*/*",
+        tenantName: "Hq975eIDSVP1hfE9exLODw==",
+      },
+    }
+  );
+  const data = await response.json();
+  return (data[0]?.JAMAAMOUNT || 0) - (data[0]?.NAMAAMOUNT || 0);
+};
+
 
 export default function Accounts() {
   const [accordionStates, setAccordionStates] = useState({
@@ -613,11 +659,28 @@ export default function Accounts() {
     outstandingDealers: false,
     cashBook: false,
     bankStatement: false,
-    receiptsRegister: false,
+    receiptsRegister: false, 
     paymentsRegister: false,
     purchaseRegister: false,
     journalRegister: false,
   });
+
+  const { data: cashOpening = 0 } = useQuery({
+    queryKey: ["cashOpening"],
+    queryFn: fetchCashOpening,
+    refetchInterval: 5000,
+  });
+
+
+
+  const { username } = useAuth(); // Get the username from AuthContext
+  const { data: bankOpening = 0 } = useQuery({
+    queryKey: ["bankOpening", username],
+    queryFn: () => fetchBankOpening(username), // Use username in API call
+    enabled: !!username, // Ensure API only runs if username exists
+    refetchInterval: 5000,
+  });
+  
 
   const [selectedBank, setSelectedBank] = useState('123');
   const [startDate, setStartDate] = useState(new Date());
@@ -665,10 +728,10 @@ export default function Accounts() {
 
           <View style={styles.openingBalances}>
             <View style={styles.balanceBox}>
-              <Text style={styles.balanceText}>Cash Opening: ₹1,286,697.00</Text>
+              <Text style={styles.balanceText}>Cash Opening: ₹{cashOpening.toFixed(2)}</Text>
             </View>
             <View style={styles.balanceBox}>
-              <Text style={[styles.balanceText, styles.bankText]}>Bank Opening: ₹513,919.00</Text>
+              <Text style={[styles.balanceText, styles.bankText]}>Bank Opening Balance: ₹{bankOpening.toFixed(2)}</Text>
             </View>
           </View>
 
@@ -743,6 +806,22 @@ export default function Accounts() {
         <Accordion title="Bank Statement" isOpen={accordionStates.bankStatement} onToggle={() => toggleAccordion('bankStatement')}>
           <Text style={styles.emptyText}>No bank statement entries</Text>
         </Accordion>
+
+        <Accordion title="receiptsRegister" isOpen={accordionStates.receiptsRegister} onToggle={() => toggleAccordion('receiptsRegister')}>
+          <Text style={styles.emptyText}>No receiptsRegister entries</Text>
+        </Accordion>
+
+        <Accordion title="paymentsRegister" isOpen={accordionStates.paymentsRegister} onToggle={() => toggleAccordion('paymentsRegister')}>
+          <Text style={styles.emptyText}>No paymentsRegister entries</Text>
+        </Accordion>
+
+        <Accordion title="purchaseRegister" isOpen={accordionStates.purchaseRegister} onToggle={() => toggleAccordion('purchaseRegister')}>
+          <Text style={styles.emptyText}>No purchaseRegister entries</Text>
+        </Accordion>
+
+        <Accordion title="journalRegister" isOpen={accordionStates.journalRegister} onToggle={() => toggleAccordion('journalRegister')}>
+          <Text style={styles.emptyText}>No journalRegister entries</Text>
+        </Accordion>
       </View>
     </ScrollView>
   );
@@ -761,7 +840,7 @@ const styles = StyleSheet.create({
   openingBalances: { gap: 8, marginBottom: 16 },
   balanceBox: { backgroundColor: '#ffffff', padding: 12, borderRadius: 4, borderWidth: 1, borderColor: '#e5e7eb' },
   balanceText: { fontSize: 18, color: '#1f2937' },
-  bankText: { fontSize: 20, fontWeight: 'bold' },
+  bankText: { fontSize: 20, color: '#1f2937' },
   filters: { gap: 12 },
   bankSelect: { marginBottom: 8 },
   filterLabel: { fontSize: 16, color: '#374151', marginBottom: 4 },
@@ -771,4 +850,3 @@ const styles = StyleSheet.create({
   dateInput: { flex: 1, backgroundColor: '#ffffff', borderRadius: 4, borderWidth: 1, borderColor: '#e5e7eb', padding: 10, alignItems: 'center' },
   emptyText: { color: '#6b7280', fontStyle: 'italic' },
 });
-
