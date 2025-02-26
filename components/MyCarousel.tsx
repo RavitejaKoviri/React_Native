@@ -19,30 +19,28 @@ const Carousel = () => {
     {
       title: 'Sales Overview',
       description: 'Track your daily sales performance',
-      image: 'https://plus.unsplash.com/premium_photo-1661677942925-b6ad7b27af18?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHdlYiUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      image: 'https://images.unsplash.com/photo-1726607424599-db0c41681494?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxzZWFyY2h8MXx8cmV0YWlsfGVufDB8fDB8fHww',
+    },
+    {
+      title: 'Inventory Status', 
+      description: 'Monitor your stock levels',
+      image: 'https://plus.unsplash.com/premium_photo-1664202219714-7451573a4fa7?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHJldGFpbHxlbnwwfHwwfHx8MA%3D%3D',
     },
     {
       title: 'Inventory Status',
-      description: 'Monitor your stock levels',
-      image: 'https://images.unsplash.com/photo-1621839673705-6617adf9e890?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHdlYiUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
-    },
-    {
-      title: 'Inventory Status',
-      description: 'Monitor your stock levels',
-      image: 'https://images.unsplash.com/photo-1621839673705-6617adf9e890?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHdlYiUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      description: 'Monitor your stock levels', 
+      image: 'https://images.unsplash.com/photo-1601598851547-4302969d0614?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjR8fHJldGFpbHxlbnwwfHwwfHx8MA%3D%3D',
     },
     {
       title: 'Sales Overview',
       description: 'Track your daily sales performance',
-      image: 'https://plus.unsplash.com/premium_photo-1661677942925-b6ad7b27af18?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fHdlYiUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      image: 'https://images.unsplash.com/photo-1571867424488-4565932edb41?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDB8fHJldGFpbHxlbnwwfHwwfHx8MA%3D%3D',
     },
     {
       title: 'Inventory Status',
       description: 'Monitor your stock levels',
-      image: 'https://images.unsplash.com/photo-1621839673705-6617adf9e890?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHdlYiUyMGRlc2lnbnxlbnwwfHwwfHx8MA%3D%3D',
+      image: 'https://images.unsplash.com/photo-1601642263169-e6159cd2320e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTF8fHJldGFpbHxlbnwwfHwwfHx8MA%3D%3D',
     },
-  
-   
   ];
 
   useEffect(() => {
@@ -112,19 +110,21 @@ const styles = StyleSheet.create({
   container: {
     position: 'relative',
     height: 200,
-    marginTop: -1, // Add negative margin to remove the gap
+    marginTop: -1,
     marginBottom: 16,
   },
   slide: {
     width: SCREEN_WIDTH,
     height: '100%',
+    backgroundColor: '#fff',
   },
   image: {
-    width: '100%',
+    width: SCREEN_WIDTH,
     height: '100%',
+    backgroundColor: '#fff',
   },
   content: {
-    position: 'absolute',
+    position: 'absolute', 
     bottom: 0,
     left: 0,
     right: 0,
