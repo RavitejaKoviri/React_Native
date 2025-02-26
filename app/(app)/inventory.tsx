@@ -544,9 +544,12 @@ export default function Inventory() {
           ) : hsnWiseStockData.length > 0 ? (
             hsnWiseStockData.map((item, index) => (
               <View key={index} style={styles.stockItem}>
-                {/* <Text style={styles.stockText}>GST: {item.GST}</Text>
+
+                <Text style={styles.stockText}>GST: {item.GST}</Text>
                 <Text style={styles.stockText}>HSNCODE: {item.HSNCODE}</Text>
-                <Text style={styles.stockText}>PAMOUNT: {item.PAMOUNT}</Text> */}
+                <Text style={styles.stockText}>PAMOUNT: {item.PAMOUNT}</Text>
+
+      
                 <Text style={styles.stockText}>QTY: {item.QTY}</Text>
                 <Text style={styles.stockText}>SAMOUNT: {item.SAMOUNT}</Text>
               </View>
@@ -613,8 +616,7 @@ export default function Inventory() {
           ) : (
                 <Text style={styles.emptyText}>No inventory wise stock data</Text>
           )}
-          
-          
+
         </Accordion>
 
         <Accordion title="Bar Code" isOpen={accordionStates.barCode} onToggle={() => toggleAccordion('barCode')}>
