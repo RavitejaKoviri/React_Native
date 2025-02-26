@@ -248,7 +248,7 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -275,11 +275,27 @@ export default function Accounts() {
     journalRegister: false,
   });
 
+  const [loading, setLoading] = useState(false);
   const [selectedBank, setSelectedBank] = useState('123');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [showStartPicker, setShowStartPicker] = useState(false);
   const [showEndPicker, setShowEndPicker] = useState(false);
+
+  const [brands,setBrands] = useState([]);
+  const [topPrices, setTopPrices] = useState([]);
+  const [salesMan, setSalesMan] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
+  const [topbills, setTopBills] = useState([]);
+
+
+  const dateFormat = (date: Date): string => {
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+    return `${month}/${day}/${year}`;
+  };
+  
 
   const toggleAccordion = (key: keyof typeof accordionStates) => {
     setAccordionStates((prev) => ({
@@ -301,6 +317,158 @@ export default function Accounts() {
       return acc;
     }, {} as typeof accordionStates));
   };
+
+  const fetchTopBills = async () => {
+    setLoading(true);
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetTopTenBills?billStartDate=${formattedStartDate}&billEndDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          tenantName: "Hq975eIDSVP1hfE9exLODw==",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      setTopBills(data);
+      console.log("Fetched Top Bills Data:", data);
+    } catch (error) {
+      console.error("Error fetching Outstanding Customers:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
+  
+  const fetchTopBrands = async () => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    setLoading(true);
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetTopTenBrands?billStartDate=${formattedStartDate}&billEndDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          tenantName: "Hq975eIDSVP1hfE9exLODw==",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log("Fetched Top brands:", data);
+      setBrands(data);
+    } catch (error) {
+      console.error("Error fetching Cash Book:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const fetchSalesMan = async () => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    setLoading(true);
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetTopTenSalesMan?billStartDate=${formattedStartDate}&billEndDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          tenantName: "Hq975eIDSVP1hfE9exLODw==",
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      console.log("Fetched Sales Man:", data);
+      setSalesMan(data);
+    } catch (error) {
+      console.error("Error fetching Sales Man:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  const fetchTopPrices = async () => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    setLoading(true);
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetTopTenPrice?billStartDate=${formattedStartDate}&billEndDate=${formattedEndDate}`;
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          tenantName: "Hq975eIDSVP1hfE9exLODw==",        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      setTopPrices(data);
+      console.log("Fetched Top prices :", data);
+    } catch (error) {
+      console.error("Error fetching Top Products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchTopProducts = async () => {
+    const formattedStartDate = encodeURIComponent(dateFormat(startDate));
+    const formattedEndDate = encodeURIComponent(dateFormat(endDate));
+    setLoading(true);
+    const url = `http://www.textileerp.timeserasoftware.in/api/ERP/GetTopTenProducts?billStartDate=${formattedStartDate}&billEndDate=${formattedEndDate}&pType=24`;
+    try {
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          accept: "*/*",
+          tenantName: "Hq975eIDSVP1hfE9exLODw==",        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      setTopProducts(data);
+      console.log("Fetched Top products :", data);
+    } catch (error) {
+      console.error("Error fetching Top Products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(()=>{
+    fetchSalesMan();
+    fetchTopBrands();
+    fetchTopPrices();
+    fetchTopBills();
+    fetchTopProducts()
+
+    console.log(dateFormat(startDate))
+
+  },[startDate,endDate])
+  
 
   return (
     <ScrollView style={styles.scrollView}>
@@ -346,17 +514,17 @@ export default function Accounts() {
             </View> */}
 
             {/* Date Pickers */}
-            <View style={styles.dateContainer}>
+            {/* <View style={styles.dateContainer}>
               <Pressable onPress={() => setShowStartPicker(true)} style={styles.dateInput}>
                 <Text>{startDate.toLocaleDateString()}</Text>
               </Pressable>
               <Pressable onPress={() => setShowEndPicker(true)} style={styles.dateInput}>
                 <Text>{endDate.toLocaleDateString()}</Text>
               </Pressable>
-            </View>
+            </View> */}
 
             {/* Start Date Picker */}
-            {showStartPicker && (
+            {/* {showStartPicker && (
               <DateTimePicker
                 value={startDate}
                 mode="date"
@@ -366,10 +534,10 @@ export default function Accounts() {
                   if (date) setStartDate(date);
                 }}
               />
-            )}
+            )} */}
 
             {/* End Date Picker */}
-            {showEndPicker && (
+            {/* {showEndPicker && (
               <DateTimePicker
                 value={endDate}
                 mode="date"
@@ -380,29 +548,155 @@ export default function Accounts() {
                 }}
               />
             )}
+          </View> */}
+
+<View style={styles.dateContainer}>
+            <Pressable onPress={() => setShowStartPicker(true)} style={styles.dateInput}>
+              <Text>{startDate.toLocaleDateString()}</Text>
+            </Pressable>
+            <Pressable onPress={() => setShowEndPicker(true)} style={styles.dateInput}>
+              <Text>{endDate.toLocaleDateString()}</Text>
+            </Pressable>
           </View>
+          {showStartPicker && (
+            <DateTimePicker
+              value={startDate}
+              mode="date"
+              display="default"
+              onChange={(event, date) => {
+                setShowStartPicker(false);
+                if (date) setStartDate(date);
+              }}
+            />
+          )}
+          {showEndPicker && (
+            <DateTimePicker
+              value={endDate}
+              mode="date"
+              display="default"
+              onChange={(event, date) => {
+                setShowEndPicker(false);
+                if (date) setEndDate(date);
+              }}
+            />
+          )}
+        </View>
         </View>
 
+{/* 
+        const [brands,setBrands] = useState([]);
+  const [topPrices, setTopPrices] = useState([]);
+  const [salesMan, setSalesMan] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
+  const [topbills, setTopBills] = useState([]); */}
+
         {/* Accordions */}
-        <Accordion title="Top 10 Invoices" isOpen={accordionStates.outstandingCustomers} onToggle={() => toggleAccordion('outstandingCustomers')}>
-          <Text style={styles.emptyText}></Text>
-        </Accordion>
+        <Accordion 
+            title="Top 10 Bills" 
+            isOpen={accordionStates.outstandingCustomers} 
+            onToggle={() => toggleAccordion('outstandingCustomers')}
+          >
+            {loading ? (
+              <Text style={styles.emptyText}>Loading...</Text>
+            ) : topbills.length > 0 ? (
+              topbills.map((item, index) => (
+                <View key={index} style={styles.stockItem}>
+                  <Text style={styles.stockText}>Bill No: {item.billno}</Text>
+                  <Text style={styles.stockText}>Bill Date: {new Date(item.billdate).toLocaleDateString()}</Text>
+                  <Text style={styles.stockText}>Customer Name: {item.CustName}</Text>
+                  <Text style={styles.stockText}>Quantity: {item.QTY}</Text>
+                  <Text style={styles.stockText}>Total Amount: {item.AMOUNT}</Text>
+                  <Text style={styles.stockText}>GST Amount: {item.GSTAMT}</Text>
+                  <Text style={styles.stockText}>Basic Amount: {item.BASICAMT}</Text>
+                  <Text style={styles.stockText}>CGST: {item.CGSTAMT}</Text>
+                  <Text style={styles.stockText}>SGST: {item.SGSTAMT}</Text>
+                  <Text style={styles.stockText}>IGST: {item.IGSTAMT}</Text>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.emptyText}>No purchase type stock data</Text>
+            )}
+          </Accordion>
 
-        <Accordion title="Top 10 Brands" isOpen={accordionStates.outstandingDealers} onToggle={() => toggleAccordion('outstandingDealers')}>
-          <Text style={styles.emptyText}></Text>
-        </Accordion>
+          <Accordion 
+            title="Top 10 Brands" 
+            isOpen={accordionStates.outstandingDealers} 
+            onToggle={() => toggleAccordion('outstandingDealers')}
+          >
+            {loading ? (
+              <Text style={styles.emptyText}>Loading...</Text>
+            ) : brands.length > 0 ? (
+              brands.map((item, index) => (
+                <View key={index} style={styles.stockItem}>
+                  <Text style={styles.stockText}>Brand Name: {item.COMPNAME}</Text>
+                  <Text style={styles.stockText}>Total Sales: {item.AMOUNT}</Text>
+                  <Text style={styles.stockText}>Quantity: {item.QTY}</Text>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.emptyText}>No brand data available</Text>
+            )}
+          </Accordion>
 
-        <Accordion title="Top 10 Price" isOpen={accordionStates.cashBook} onToggle={() => toggleAccordion('cashBook')}>
-          <Text style={styles.emptyText}></Text>
-        </Accordion>
+          <Accordion 
+            title="Top 10 Prices" 
+            isOpen={accordionStates.cashBook} 
+            onToggle={() => toggleAccordion('cashBook')}
+          >
+            {loading ? (
+              <Text style={styles.emptyText}>Loading...</Text>
+            ) : topPrices.length > 0 ? (
+              topPrices.map((item, index) => (
+                <View key={index} style={styles.stockItem}>
+                  <Text style={styles.stockText}>Actual Rate: {item.ACTRATE}</Text>
+                  <Text style={styles.stockText}>Total Amount: {item.AMOUNT}</Text>
+                  <Text style={styles.stockText}>Quantity: {item.QTY}</Text>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.emptyText}>No price data available</Text>
+            )}
+          </Accordion>
 
-        <Accordion title="Top 10 Sales Man" isOpen={accordionStates.bankStatement} onToggle={() => toggleAccordion('bankStatement')}>
-          <Text style={styles.emptyText}></Text>
-        </Accordion>
+          <Accordion 
+            title="Top 10 Sales Man" 
+            isOpen={accordionStates.bankStatement} 
+            onToggle={() => toggleAccordion('bankStatement')}
+          >
+            {loading ? (
+              <Text style={styles.emptyText}>Loading...</Text>
+            ) : salesMan.length > 0 ? (
+              salesMan.map((item, index) => (
+                <View key={index} style={styles.stockItem}>
+                  <Text style={styles.stockText}>Salesman Code: {item.SMCODE}</Text>
+                  <Text style={styles.stockText}>Total Sales: {item.AMOUNT}</Text>
+                  <Text style={styles.stockText}>Total Quantity Sold: {item.QTY}</Text>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.emptyText}>No salesman data available</Text>
+            )}
+          </Accordion>
 
-        <Accordion title="Top 10 Products" isOpen={accordionStates.bankStatement} onToggle={() => toggleAccordion('bankStatement')}>
-          <Text style={styles.emptyText}></Text>
-        </Accordion>
+          <Accordion 
+            title="Top 10 Products" 
+            isOpen={accordionStates.bankStatement} 
+            onToggle={() => toggleAccordion('bankStatement')}
+          >
+            {loading ? (
+              <Text style={styles.emptyText}>Loading...</Text>
+            ) : topProducts.length > 0 ? (
+              topProducts.map((item, index) => (
+                <View key={index} style={styles.stockItem}>
+                  <Text style={styles.stockText}>Product Name: {item.productName}</Text>
+                  <Text style={styles.stockText}>Total Sales: {item.totalSales}</Text>
+                </View>
+              ))
+            ) : (
+              <Text style={styles.emptyText}>No product data available</Text>
+            )}
+          </Accordion>
+
       </View>
     </ScrollView>
   );
@@ -430,6 +724,8 @@ const styles = StyleSheet.create({
   dateContainer: { flexDirection: 'row', gap: 8 },
   dateInput: { flex: 1, backgroundColor: '#ffffff', borderRadius: 4, borderWidth: 1, borderColor: '#e5e7eb', padding: 10, alignItems: 'center' },
   emptyText: { color: '#6b7280', fontStyle: 'italic' },
+  stockItem: { backgroundColor: '#ffffff', padding: 10, marginBottom: 5, borderRadius: 4, borderWidth: 1, borderColor: '#e5e7eb' },
+  stockText: { fontSize: 16, fontWeight: '500' },
 });
 
 
