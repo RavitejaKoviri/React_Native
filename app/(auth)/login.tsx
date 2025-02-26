@@ -147,12 +147,33 @@ export default function LoginScreen() {
   const [error, setError] = useState('');
   const { login } = useAuth();
 
+  // const handleLogin = async () => {
+  //   const success = await login(username, password);
+  //   if (!success) {
+  //     setError('Invalid username or password');
+  //   }
+  // };
+
+
+
+  const [loading, setLoading] = useState(false);
+
   const handleLogin = async () => {
+    setLoading(true);
+    setError('');
+  
     const success = await login(username, password);
     if (!success) {
       setError('Invalid username or password');
     }
+  
+    setLoading(false);
   };
+  
+
+
+
+
 
   return (
     <View style={styles.container}>
@@ -198,7 +219,8 @@ export default function LoginScreen() {
 
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
-          <View style={styles.buttonContainer}>
+          {/* <View style={styles.buttonContainer}>
+
             <TouchableOpacity onPress={handleLogin}>
               <LinearGradient
                 colors={['#65ddb7', '#5cc9a7']}
@@ -207,7 +229,23 @@ export default function LoginScreen() {
                 <Text style={styles.buttonText}>Submit</Text>
               </LinearGradient>
             </TouchableOpacity>
-          </View>
+          </View> */}
+
+<View style={styles.buttonContainer}>
+  {loading ? <Text style={styles.loadingText}>Logging in...</Text> : null}
+  <TouchableOpacity onPress={handleLogin} disabled={loading}>
+    <LinearGradient
+      colors={['#65ddb7', '#5cc9a7']}
+      style={[styles.button, loading && { opacity: 0.5 }]}
+    >
+      <Text style={styles.buttonText}>Submit</Text>
+    </LinearGradient>
+  </TouchableOpacity>
+</View>
+
+
+
+          
         </View>
       </ImageBackground>
     </View>
@@ -296,6 +334,13 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     letterSpacing: 0.5,
   },
+  loadingText: {
+    color: '#ffffff',
+    textAlign: 'center',
+    fontSize: 14,
+    marginBottom: 10,
+  }
+  
 });
 
 
